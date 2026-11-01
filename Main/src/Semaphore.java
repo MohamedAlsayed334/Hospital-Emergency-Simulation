@@ -1,6 +1,5 @@
 class Semaphore {
     protected int value = 0 ;
-
     protected Semaphore()
     {
         value = 0 ;
