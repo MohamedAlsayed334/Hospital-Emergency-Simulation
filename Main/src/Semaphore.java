@@ -3,31 +3,30 @@ public class Semaphore {
     public Semaphore() { value = 0; }
     public Semaphore(int initial) { value = initial; }
 
-    public synchronized void P() { // normal wait
+    public synchronized void P() {
         try {
             while (value == 0) {
                 wait();
             }
             value--;
         } catch (InterruptedException e) {
-            notify();                       // pass the wakeup on
+            notify();
             Thread.currentThread().interrupt();
         }
     }
-    public synchronized void V() { // normal notify the waiting thread
+    public synchronized void V() {
         value++;
         notify();
     }
-    // true if acquired, false if timed out (timeout in milliseconds)
     public synchronized boolean tryAcquire(long timeout) {
         long deadline = System.currentTimeMillis() + timeout;
         try {
-            while (value == 0) { // no treatment room available
+            while (value == 0) {
                 long remaining = deadline - System.currentTimeMillis();
                 if (remaining <= 0) {
-                    return false;           // timed out, nothing was taken
+                    return false;
                 }
-                wait(remaining); // else wait (the remaining)
+                wait(remaining);
             }
             value--;
             return true;
