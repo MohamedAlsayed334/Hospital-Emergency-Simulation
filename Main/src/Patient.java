@@ -1,2 +1,7 @@
-public class Patient {
+public class Patient implements Runnable
+{
+    public void run()
+    {
+
+    }
 }
