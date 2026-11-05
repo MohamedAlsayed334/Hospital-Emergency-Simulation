@@ -18,12 +18,12 @@ public class WaitingRoom {
     }
 
     public void insert(Patient patient) throws InterruptedException {
-        mutualExclusion.P();
+        mutualExclusion.acquire();
         buffer[in] = patient;
         in = (in + 1) % CAPACITY;
         Logger.log(patient.getLabel() + " has entered the waiting room.");
-        mutualExclusion.V();
-        full.V();
+        mutualExclusion.release();
+        full.release();
     }
 
     // Non-blocking: returns false if there is no free seat
@@ -36,20 +36,20 @@ public class WaitingRoom {
     }
 
     public void put(Patient p) throws InterruptedException {
-        empty.P();
+        empty.acquire();
         insert(p);
     }
 
     // Blocking: the doctor stays idle until a patient is available
     public Patient take(int doctorId) throws InterruptedException {
-        full.P();
-        mutualExclusion.P();
+        full.acquire();
+        mutualExclusion.acquire();
         Patient p = buffer[out];
         buffer[out] = null;
         out = (out + 1) % CAPACITY;
         Logger.log("Doctor " + doctorId + " is assigned to " + p.getLabel() + ".");
-        mutualExclusion.V();
-        empty.V();
+        mutualExclusion.release();
+        empty.release();
         return p;
     }
 }

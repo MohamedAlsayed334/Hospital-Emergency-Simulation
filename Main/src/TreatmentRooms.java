@@ -7,6 +7,6 @@ public class TreatmentRooms {
         return semaphore.tryAcquire(TIMEOUT_MS);
     }
     public void release() {
-        semaphore.V();
+        semaphore.release();
     }
 }
