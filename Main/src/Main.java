@@ -10,7 +10,8 @@ public class Main {
         int numDoctors = in.nextInt();
         System.out.print("Number of patients: ");
         int numPatients = in.nextInt();
-
+        in.close();
+        
         WaitingRoom waitingRoom = new WaitingRoom(capacity);
         TreatmentRooms rooms = new TreatmentRooms();
         AtomicInteger treated = new AtomicInteger(0);
